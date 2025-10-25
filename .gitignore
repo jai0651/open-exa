@@ -1,0 +1,39 @@
+
+# Binaries
+/bin/
+bin/
+
+# Build artifacts
+*.exe
+*.out
+*.o
+*.a
+*.so
+
+# Dependency directories
+vendor/
+
+# Go module files (that are fetched/generated)
+go.sum
+
+# Coverage reports
+coverage.out
+coverage.html
+
+# IDE/editor/project files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Test output
+*.test
+
+# Ignore environment variable files
+.env
+
