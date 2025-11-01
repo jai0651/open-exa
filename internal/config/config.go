@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/joho/godotenv"
 )
@@ -56,9 +57,32 @@ type Config struct {
 
 // LoadConfig loads configuration from environment variables with defaults
 func LoadConfig() *Config {
-	// Try to load .env file
+	// Try to load .env file from current directory first
 	if err := godotenv.Load(); err != nil {
-		log.Println("No .env file found, using system environment variables")
+		// Try to load from workspace root (common when debugging or running from subdirectories)
+		if wd, err2 := os.Getwd(); err2 == nil {
+			var envPath string
+			// If we're in a subdirectory, try going up to find .env
+			if strings.Contains(wd, "/cmd/") {
+				parts := strings.Split(wd, "/cmd/")
+				envPath = parts[0] + "/.env"
+			} else {
+				// Try parent directory
+				envPath = wd + "/.env"
+				// If not found, try parent's parent
+				if _, err := os.Stat(envPath); os.IsNotExist(err) {
+					parentDir := strings.TrimSuffix(wd, "/"+strings.Split(wd, "/")[len(strings.Split(wd, "/"))-1])
+					envPath = parentDir + "/.env"
+				}
+			}
+			if err := godotenv.Load(envPath); err == nil {
+				log.Printf("Loaded .env from %s", envPath)
+			} else {
+				log.Println("No .env file found, using system environment variables")
+			}
+		} else {
+			log.Println("No .env file found, using system environment variables")
+		}
 	}
 	config := &Config{
 		// Server defaults
