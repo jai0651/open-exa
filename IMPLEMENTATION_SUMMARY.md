@@ -116,7 +116,7 @@ Web Crawler → Parser → Chunker → Embeddings → Vector DB (ChromaDB)
      ↓           ↓        ↓           ↓
    Storage ←→ Indexer ←→ Retriever ←→ LLM Reranker
      ↓           ↓
-  SQLite    Elasticsearch
+  Postgres   Elasticsearch
 ```
 
 ## 🔧 Configuration Options

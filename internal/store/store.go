@@ -86,11 +86,6 @@ func NewStore(config Config) Store {
 		panic(fmt.Sprintf("Failed to open database: %v", err))
 	}
 
-	// Test connection
-	if err := db.Ping(); err != nil {
-		panic(fmt.Sprintf("Failed to connect to database: %v", err))
-	}
-
 	store := &postgresStore{db: db}
 
 	// Initialize database schema
